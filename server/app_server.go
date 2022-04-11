@@ -20,7 +20,8 @@ type appServer struct {
 
 func (a *appServer) instrumentationMiddleware() {
 	a.routerEngine.Use(middleware.PrometheusUriRequestTotal())
-	a.routerEngine.Use(middleware.PrometheusUriRequestTotal())
+	a.routerEngine.Use(middleware.PrometheusUriErrorTotal())
+	a.routerEngine.Use(middleware.PrometheusUriRequestDuration())
 }
 
 func (a *appServer) metricsHandler() {

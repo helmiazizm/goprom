@@ -3,6 +3,7 @@ package middleware
 import (
 	"goprom/metric"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus"
@@ -33,5 +34,17 @@ func PrometheusUriErrorTotal() gin.HandlerFunc {
 				metric.StatusCode:	status,
 			}).Inc()
 		}
+	}
+}
+
+func PrometheusUriRequestDuration() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		t := time.Now()
+		ctx.Next()
+		latency := time.Since(t)
+		println("Latency ==> ", latency.Seconds())
+		metric.RequestDuration.With(prometheus.Labels{
+			metric.Uri: ctx.Request.URL.RequestURI(),
+		}).Observe(latency.Seconds())
 	}
 }

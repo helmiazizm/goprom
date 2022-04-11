@@ -26,4 +26,12 @@ var (
 			Help: "all the server error request with every uri",
 		}, []string{Uri, Method, StatusCode},
 	)
+
+	RequestDuration = promauto.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name: "goprom_request_duration",
+			Help: "the time server took to handle request",
+			Buckets: prometheus.LinearBuckets(0.01, 0.05, 10),
+		}, []string{Uri},
+	)
 )
