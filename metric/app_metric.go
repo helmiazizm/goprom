@@ -19,4 +19,11 @@ var (
 			Help: "all the server received request num with every uri",
 		}, []string{Uri, Method},
 	)
+
+	URIErrorTotal = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "goprom_uri_error_total",
+			Help: "all the server error request with every uri",
+		}, []string{Uri, Method, StatusCode},
+	)
 )
